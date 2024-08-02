@@ -13,7 +13,7 @@ import {
 } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
 import { PiSignOutBold } from "react-icons/pi";
-
+//test
 function GlobalNavBar(props) {
   return (
     <div>
@@ -34,7 +34,7 @@ function GlobalNavBar(props) {
               <MdOutlinePostAdd />
             </a>
             <div style={{ paddingRight: "20px" }}></div>
-            <a href="/">
+            <a href="/ ">
               <PiSignOutBold />
             </a>
           </IconContext.Provider>
