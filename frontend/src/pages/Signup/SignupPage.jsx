@@ -116,7 +116,7 @@ export const SignupPage = () => {
               />
             </div>
             <input role="submit-button" id="submit" type="submit" value="Submit" />
-            <Link to="/login">Already have an account? Login here</Link>
+            <Link to="/login" id="link">Already have an account? Login here</Link>
           </form>
           {errorMessage && <p className="error-message">{errorMessage}</p>}
         </div>
