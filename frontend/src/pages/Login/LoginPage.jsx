@@ -61,6 +61,7 @@ export const LoginPage = () => {
               />
             </div>
             <input role="submit-button" id="submit" type="submit" value="Submit" />
+        
             <Link to="/signup" id="signup-link">Don&apos;t have an account? Sign up here</Link>
           </form>
           {errorMessage && <p className="error-message">{errorMessage}</p>}
