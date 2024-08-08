@@ -8,3 +8,23 @@
     margin: 5px;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.865);
 }
+
+.likes-info-container {
+    display: flex;
+    /* flex-direction: row; */
+    align-items: center; /* Vertically center-align items */
+    margin: 5px;
+}
+
+.liker-name {
+    font-weight: bold;
+    margin-left: 10px; /* Space between the image and name */
+    margin-bottom: 0;
+}
+
+.liker-profile-image {
+    height: 30px;
+    width: 30px;
+    object-fit: cover;
+    border: 1px solid #000000;
+}

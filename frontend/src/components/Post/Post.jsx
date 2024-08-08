@@ -24,8 +24,8 @@ const Post = (props) => {
         try {
             const token = localStorage.getItem("token");
             const data = await likePost(token, props.post._id);
-              setLiked(!liked);
-              setNumberOfLikes(data.numberOfLikes);
+            setLiked(data.isLikedByUser);
+            setNumberOfLikes(data.numberOfLikes);
         } catch (error) {
             console.log(error);
         }
@@ -58,9 +58,10 @@ const Post = (props) => {
     const image = props.post.imageUrl;
     const comments = props.post.comments;
     const profileImage = props.post.user_id.profileImage
+    const likedByUsers = props.post.likes;
 
     return (
-        <div className='d-flex justify-content-center' style={{ marginBottom: "30px" }}>
+        <div className='d-flex justify-content-center' style={{ marginBottom: "30px" }} data-testid="post">
           <Toast style={{ width: "60%", border: "1px solid black" }}>
 
             <Toast.Header>
@@ -73,9 +74,9 @@ const Post = (props) => {
                 {userName ? userName : ""}
               </strong>{" "}
               {/* Added user details in posts controller in backend to be used here */}
-              <Button variant='link' onClick={handleLike}>
+              <Button variant='link' onClick={handleLike} data-testid="like-button">
                 {liked ? <FaHeart color='red' data-testid="filled-heart-icon" /> : <FaRegHeart />}
-                <span>{numberOfLikes}</span>
+                <span data-testid="like-count">{numberOfLikes}</span>
               </Button>
                 <small>Posted {formattedDate}</small>
             </Toast.Header>
@@ -93,7 +94,7 @@ const Post = (props) => {
                       alt="Post"
                   />
               )}
-             
+            
             </Toast.Body>
               <br></br>
               <Button className="my-button" onClick={handleAddComment}>Add a comment</Button>
@@ -119,7 +120,7 @@ const Post = (props) => {
               comments.map((comment) => (
               <div key={comment._id} className="comment" style={commentStyle}>
               <p>
-                <p><strong>{comment.user_id.name}</strong>: {comment.comment}</p>
+                <strong>{comment.user_id.name}</strong>: {comment.comment}
               </p> 
                 <hr style={separatorStyle} />
               </div>
@@ -131,7 +132,31 @@ const Post = (props) => {
 
           </Accordion.Item>
 
+          <Accordion.Item eventKey="1">
+                <Accordion.Header>
+                  <span style={{ fontSize: "0.9rem" }}>Likes: {numberOfLikes}</span>
+                </Accordion.Header>
+                <Accordion.Body>
+                  {likedByUsers && likedByUsers.length > 0 ? (
+                    likedByUsers.map((user) => (
+                      <div key={user._id} className="likes-info-container">
+                        <img 
+                          src={user.profileImage ? user.profileImage : "holder.js/20x20?text=%20"} 
+                          className="rounded me-2 liker-profile-image" 
+                          alt="Profile" 
+                        />
+                        <p className="liker-name"><strong>{user.name}</strong></p>
+                      </div>
+                    ))
+                  ) : (
+                    <p>No likes yet. Be the first to like!</p>
+                  )}
+                </Accordion.Body>
+              </Accordion.Item>
+
           </Accordion>
+
+          
 
           </Toast>
         
