@@ -1,17 +1,15 @@
 const Post = require("../models/post");
 const { generateToken } = require("../lib/token");
-const { post } = require("../app");
 
 const getAllPosts = async (req, res) => {
-
   const posts = await Post.find()
-  .populate("user_id", "name email profileImage")
-  .populate("comments.user_id", "name email");
+    .populate("user_id", "name email profileImage")
+    .populate("comments.user_id", "name email");
 
-  const postsWithLikes = posts.map(post => ({
+  const postsWithLikes = posts.map((post) => ({
     ...post._doc, // spread operator to copy the post object - in mongoose the object is stored in _doc
     numberOfLikes: post.likes.length,
-    isLikedByUser: post.likes.includes(req.user_id) // check if the user_id is in the likes array - will return true or false
+    isLikedByUser: post.likes.includes(req.user_id), // check if the user_id is in the likes array - will return true or false
   }));
 
   const token = generateToken(req.user_id);
@@ -31,20 +29,16 @@ const createPost = async (req, res) => {
 
 const getUserPosts = async (req, res) => {
   try {
-
-
     const posts = await Post.find({ user_id: req.user_id })
-    .populate("user_id", "name email profileImage")
-    .populate("comments.user_id", "name");
+      .populate("user_id", "name email profileImage")
+      .populate("comments.user_id", "name");
 
-    const postsWithLikes = posts.map(post => ({
+    const postsWithLikes = posts.map((post) => ({
       ...post._doc,
       numberOfLikes: post.likes.length,
-      isLikedByUser: post.likes.includes(req.user_id)
+      isLikedByUser: post.likes.includes(req.user_id),
     }));
-    res.status(200).json({posts: postsWithLikes});
-
-
+    res.status(200).json({ posts: postsWithLikes });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Error fetching the user's posts" });
@@ -90,7 +84,7 @@ const updatePost = async (req, res) => {
   }
 };
 
-const likePost = async (req,res) => {
+const likePost = async (req, res) => {
   const { id } = req.params;
   const userId = req.user_id;
 
@@ -112,14 +106,14 @@ const likePost = async (req,res) => {
     }
 
     await postToLike.save();
-    res.status(200).json({ message: "Post liked", numberOfLikes: postToLike.likes.length });
-    
+    res
+      .status(200)
+      .json({ message: "Post liked", numberOfLikes: postToLike.likes.length });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal server error" });
   }
-
-}
+};
 
 const PostsController = {
   getAllPosts: getAllPosts,
@@ -129,8 +123,7 @@ const PostsController = {
 
   updatePost: updatePost,
 
-  likePost: likePost
-
+  likePost: likePost,
 };
 
 module.exports = PostsController;
