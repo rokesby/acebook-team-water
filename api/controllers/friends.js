@@ -110,12 +110,37 @@ const getFriends = async (req, res) => {
   }
 };
 
+const getFriendRequests = async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    const userIsFound = await User.findById(userId);
+
+    if (!userIsFound) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const user = await User.findById(userId).populate(
+      "friendRequestsReceived",
+      "name profileImage"
+    );
+
+    res
+      .status(200)
+      .json({ friendRequestsReceived: user.friendRequestsReceived });
+  } catch (error) {
+    res.status(400).json({
+      message: "Something went wrong with retrieving the friend request list",
+    });
+  }
+};
+
 const FriendsController = {
   sendFriendRequest: sendFriendRequest,
   acceptFriendRequest: acceptFriendRequest,
   declineFriendRequest: declineFriendRequest,
   removeFriend: removeFriend,
   getFriends: getFriends,
+  getFriendRequests: getFriendRequests,
 };
 
 module.exports = FriendsController;
