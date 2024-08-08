@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import GlobalNavBar from "../../components/Post/GlobalNavBar";
 import { login } from "../../services/authentication";
-import "./loginPage.css";
+import "./LoginPage.css";
 
 export const LoginPage = () => {
   const [email, setEmail] = useState("");
