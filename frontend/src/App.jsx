@@ -11,6 +11,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { CreatePostForm } from "./pages/CreatePost/CreatePostForm";
 import { AddComment } from "./pages/AddComment/AddComment";
 import { UpdatePostForm } from "./pages/UpdatePost/UpdatePost";
+import { FriendsPage } from "./pages/Friends/FriendsPage";
 
 const isAuthenticated = () => {
   return localStorage.getItem("token") !== null;
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
       {
         path: "/updatepost",
         element: <UpdatePostForm />
+      },
+      {
+        path: "/friends",
+        element: <FriendsPage />
       }
     ],
   }
