@@ -94,14 +94,14 @@ const Post = (props) => {
                       alt="Post"
                   />
               )}
-            
+              
             </Toast.Body>
               <br></br>
               <Button className="my-button" onClick={handleAddComment}>Add a comment</Button>
               {location.pathname === "/profile" && (
                 <>
                   <Button className="my-button" onClick={handleEditPost}>Edit Post</Button>
-                  <Button className="my-button" variant="danger" onClick={handleDeletePost}>Delete Post</Button>
+                  <Button className="my-button-red" variant="danger" onClick={handleDeletePost}>Delete Post</Button>
                 </>        
               )}
               <br />

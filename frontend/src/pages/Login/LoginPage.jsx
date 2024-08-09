@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import GlobalNavBar from "../../components/Post/GlobalNavBar";
 import { login } from "../../services/authentication";
-import "./loginPage.css";
+import "./LoginPage.css";
 
 export const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -61,6 +61,7 @@ export const LoginPage = () => {
               />
             </div>
             <input role="submit-button" id="submit" type="submit" value="Submit" />
+        
             <Link to="/signup" id="signup-link">Don&apos;t have an account? Sign up here</Link>
           </form>
           {errorMessage && <p className="error-message">{errorMessage}</p>}
