@@ -9,8 +9,13 @@ export const HomePage = () => {
       <br></br>
       <div className="home">
         <h1>Welcome to Acebook!</h1>
-        <Link to="/signup">Sign Up</Link>
-        <Link to="/login">Log In</Link>
+        <br />
+        <br />
+        <br />
+
+        <Link to="/signup" id= "button" className="btn btn-primary">Sign Up</Link>
+        <br />
+        <Link to="/login" id= "button" className="btn btn-primary">Log In</Link>
       </div>
     </>
   );
