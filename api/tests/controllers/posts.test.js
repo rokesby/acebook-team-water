@@ -107,8 +107,7 @@ describe("/posts", () => {
       console.log("Delete response status:", deleteResponse.status);
       console.log("Delete response body:", deleteResponse.body);
 
-      expect(deleteResponse.status).toEqual(200);
-      expect(deleteResponse.body.message).toEqual("Post deleted");
+      expect(deleteResponse.status).toEqual(204);
 
       // check that the post is deleted
       const deletedPost = await Post.findById(postId);
