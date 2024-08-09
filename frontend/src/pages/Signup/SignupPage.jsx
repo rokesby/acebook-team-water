@@ -19,26 +19,26 @@ export const SignupPage = () => {
     return emailPattern.test(email);
   };
 
-    const handleSubmit = async (event) => {
-      event.preventDefault();
-      setErrorMessage("") // clears error message at the start of operations so that no old error messages are shown - doesn't change anything for now but may be useful if more error messages are coming in from the backend
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setErrorMessage(""); // clears error message at the start of operations so that no old error messages are shown - doesn't change anything for now but may be useful if more error messages are coming in from the backend
 
-      if (!isValidEmail(email)) {
-        setErrorMessage("Invalid email address format");
-        return;
-      } else if (password != confirmPassword) {
-        setErrorMessage("Passwords do not match")
-      } else {
-        try {
-          const imageForProfile = profileImage || defaultProfileImage // logical OR operator to set default profile image if no image is provided
-          await signup(name, email, password, imageForProfile); // passing in imageForProfile
-          console.log("redirecting...:");
-          navigate("/login");
-        } catch (err) {
-          console.error(err);
-          // navigate("/signup");
-          setErrorMessage(err.message)
-        }
+    if (!isValidEmail(email)) {
+      setErrorMessage("Invalid email address format");
+      return;
+    } else if (password != confirmPassword) {
+      setErrorMessage("Passwords do not match");
+    } else {
+      try {
+        const imageForProfile = profileImage || defaultProfileImage; // logical OR operator to set default profile image if no image is provided
+        await signup(name, email, password, imageForProfile); // passing in imageForProfile
+        console.log("redirecting...:");
+        navigate("/login");
+      } catch (err) {
+        console.error(err);
+        // navigate("/signup");
+        setErrorMessage(err.message);
+      }
     }
   };
 
@@ -106,7 +106,9 @@ export const SignupPage = () => {
               />
             </div>
             <div className="label-input-container">
-              <label htmlFor="profile-image">Profile Image URL (not required):</label>
+              <label htmlFor="profile-image">
+                Profile Image URL (not required):
+              </label>
               <input
                 id="profile-image"
                 type="text"
@@ -115,8 +117,18 @@ export const SignupPage = () => {
                 placeholder="Insert URL here"
               />
             </div>
-            <input role="submit-button" id="submit" type="submit" value="Submit" />
-            <Link to="/login">Already have an account? Login here</Link>
+            <input
+              role="submit-button"
+              id="submit"
+              type="submit"
+              value="Submit"
+            />
+            <Link to="/login">
+              {" "}
+              <p className="sign-in-link">
+                Already have an account? Login here
+              </p>
+            </Link>
           </form>
           {errorMessage && <p className="error-message">{errorMessage}</p>}
         </div>
