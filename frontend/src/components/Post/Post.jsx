@@ -119,9 +119,14 @@ const Post = (props) => {
 
               comments.map((comment) => (
               <div key={comment._id} className="comment" style={commentStyle}>
-              <p>
+                <img 
+                  src={comment.user_id.profileImage ? comment.user_id.profileImage : "holder.js/20x20?text=%20"} 
+                  className="rounded me-2 liker-profile-image" 
+                  alt="Profile" 
+                  />
+              
                 <strong>{comment.user_id.name}</strong>: {comment.comment}
-              </p> 
+              
                 <hr style={separatorStyle} />
               </div>
               ))
