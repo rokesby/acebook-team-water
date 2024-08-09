@@ -3,17 +3,31 @@ import moment from "moment";
 import Button from "react-bootstrap/Button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { likePost } from "../../services/posts";
 import { deletePost } from "../../services/posts";
 import Accordion from "react-bootstrap/Accordion";
 import "./Post.css";
+// import { set } from "mongoose";
 
 const Post = (props) => {
     const navigate = useNavigate();
     const location = useLocation();
-    const [liked, setLiked] = useState(props.post.isLikedByUser);
-    const [numberOfLikes, setNumberOfLikes] = useState(props.post.numberOfLikes);
+    // const [liked, setLiked] = useState(props.post.isLikedByUser);
+    // const [numberOfLikes, setNumberOfLikes] = useState(props.post.numberOfLikes);
+    const [likeInfo, setLikeInfo] = useState({
+      isLikedByUser: props.post.isLikedByUser,
+      numberOfLikes: props.post.numberOfLikes,
+      likedByUsers: props.post.likes,
+    });
+
+    useEffect(() => {
+      setLikeInfo({
+        isLikedByUser: props.post.isLikedByUser,
+        numberOfLikes: props.post.numberOfLikes,
+        likedByUsers: props.post.likes,
+      });
+    }, [props.post]);
 
     const handleAddComment = () => {
         localStorage.setItem("post_id", props.post._id);
@@ -24,10 +38,16 @@ const Post = (props) => {
         try {
             const token = localStorage.getItem("token");
             const data = await likePost(token, props.post._id);
-            setLiked(data.isLikedByUser);
-            setNumberOfLikes(data.numberOfLikes);
+            // setLiked(data.isLikedByUser);
+            // setNumberOfLikes(data.numberOfLikes);
+            setLikeInfo({
+              isLikedByUser: data.isLikedByUser,
+              numberOfLikes: data.numberOfLikes,
+              likedByUsers: data.likes,
+            })
+            console.log(`Updated like info: ${data}`);
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
   
@@ -58,7 +78,7 @@ const Post = (props) => {
     const image = props.post.imageUrl;
     const comments = props.post.comments;
     const profileImage = props.post.user_id.profileImage
-    const likedByUsers = props.post.likes;
+    // const likedByUsers = props.post.likes;
 
     return (
         <div className='d-flex justify-content-center' style={{ marginBottom: "30px" }} data-testid="post">
@@ -75,8 +95,8 @@ const Post = (props) => {
               </strong>{" "}
               {/* Added user details in posts controller in backend to be used here */}
               <Button variant='link' onClick={handleLike} data-testid="like-button">
-                {liked ? <FaHeart color='red' data-testid="filled-heart-icon" /> : <FaRegHeart />}
-                <span data-testid="like-count">{numberOfLikes}</span>
+                {likeInfo.isLikedByUser ? <FaHeart color='red' data-testid="filled-heart-icon" /> : <FaRegHeart />}
+                <span data-testid="like-count">{likeInfo.numberOfLikes}</span>
               </Button>
                 <small>Posted {formattedDate}</small>
             </Toast.Header>
@@ -118,13 +138,14 @@ const Post = (props) => {
               {comments.length > 0 ? (
 
               comments.map((comment) => (
+
               <div key={comment._id} className="comment" style={commentStyle}>
                 <img 
                   src={comment.user_id.profileImage ? comment.user_id.profileImage : "holder.js/20x20?text=%20"} 
                   className="rounded me-2 liker-profile-image" 
                   alt="Profile" 
                   />
-              
+            
                 <strong>{comment.user_id.name}</strong>: {comment.comment}
               
                 <hr style={separatorStyle} />
@@ -139,11 +160,11 @@ const Post = (props) => {
 
           <Accordion.Item eventKey="1">
                 <Accordion.Header>
-                  <span style={{ fontSize: "0.9rem" }}>Likes: {numberOfLikes}</span>
+                  <span style={{ fontSize: "0.9rem" }}>Likes: {likeInfo.numberOfLikes}</span>
                 </Accordion.Header>
                 <Accordion.Body>
-                  {likedByUsers && likedByUsers.length > 0 ? (
-                    likedByUsers.map((user) => (
+                  {likeInfo.likedByUsers && likeInfo.likedByUsers.length > 0 ? (
+                    likeInfo.likedByUsers.map((user) => (
                       <div key={user._id} className="likes-info-container">
                         <img 
                           src={user.profileImage ? user.profileImage : "holder.js/20x20?text=%20"} 
