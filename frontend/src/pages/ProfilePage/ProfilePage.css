@@ -9,7 +9,7 @@
     width: 200px; /* Adjust the size as needed */
     height: 200px; /* Adjust the size as needed */
     border-radius: 50%; /* Makes the image round */
-    border: 3px solid #3498db; /* Add a border with your preferred color */
+    border: 3px solid #2578d0;; /* Add a border with your preferred color */
     object-fit: cover; /* Ensures the image covers the container without distortion */
     padding: 5px;
 }

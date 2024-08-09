@@ -7,5 +7,13 @@
 .my-button {
     margin: 5px;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.865);
+    background-color: #2578d0;
+    border-color: #2578d0;
+}
+
+.my-button-red {
+    margin: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.865);
+
 
 }
