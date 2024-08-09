@@ -17,3 +17,23 @@
 
 
 }
+
+.likes-info-container {
+    display: flex;
+    /* flex-direction: row; */
+    align-items: center; /* Vertically center-align items */
+    margin: 5px;
+}
+
+.liker-name {
+    font-weight: bold;
+    margin-left: 10px; /* Space between the image and name */
+    margin-bottom: 0;
+}
+
+.liker-profile-image {
+    height: 30px;
+    width: 30px;
+    object-fit: cover;
+    border: 1px solid #000000;
+}

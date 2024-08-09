@@ -3,8 +3,10 @@ const { generateToken } = require("../lib/token");
 
 const getAllPosts = async (req, res) => {
   const posts = await Post.find()
-    .populate("user_id", "name email profileImage")
-    .populate("comments.user_id", "name email");
+  .populate("user_id", "name email profileImage")
+  .populate("comments.user_id", "name email")
+  .populate("likes", "name profileImage");
+
 
   const postsWithLikes = posts.map((post) => ({
     ...post._doc, // spread operator to copy the post object - in mongoose the object is stored in _doc
@@ -30,8 +32,10 @@ const createPost = async (req, res) => {
 const getUserPosts = async (req, res) => {
   try {
     const posts = await Post.find({ user_id: req.user_id })
-      .populate("user_id", "name email profileImage")
-      .populate("comments.user_id", "name");
+    .populate("user_id", "name email profileImage")
+    .populate("comments.user_id", "name")
+    .populate("likes", "name profileImage");
+
 
     const postsWithLikes = posts.map((post) => ({
       ...post._doc,
@@ -106,9 +110,12 @@ const likePost = async (req, res) => {
     }
 
     await postToLike.save();
-    res
-      .status(200)
-      .json({ message: "Post liked", numberOfLikes: postToLike.likes.length });
+    res.status(200).json({ 
+      message: "Post liked", 
+      numberOfLikes: postToLike.likes.length, 
+      likes: postToLike.likes,
+      isLikedByUser: postToLike.likes.includes(userId)
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal server error" });

@@ -11,7 +11,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { CreatePostForm } from "./pages/CreatePost/CreatePostForm";
 import { AddComment } from "./pages/AddComment/AddComment";
 import { UpdatePostForm } from "./pages/UpdatePost/UpdatePost";
+
+import { Error404Page } from "./pages/Error/Error404Page";
+
 import { FriendsPage } from "./pages/Friends/FriendsPage";
+
 
 const isAuthenticated = () => {
   return localStorage.getItem("token") !== null;
@@ -70,6 +74,10 @@ const router = createBrowserRouter([
         element: <FriendsPage />
       }
     ],
+  },
+  {
+    path: "*",
+    element: <Error404Page />,
   }
 ]);
 

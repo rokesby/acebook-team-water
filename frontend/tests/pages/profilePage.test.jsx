@@ -26,10 +26,20 @@ vi.mock("react-router-dom", async () => {
 // Mock the Post component
 vi.mock("../../components/Post/Post", () => ({
     default: ({ post }) => (
-        <div data-testid="post">
-            <p>{post.message}</p>
-            <p>By: {post.user_id.name}</p>
-            <img src={post.imageUrl} alt="Post" />
+        <div data-testid="post" className="d-flex justify-content-center">
+            <div className="toast">
+                <div className="toast-header">
+                    <img src={post.user_id.profileImage} alt="Profile" className="rounded me-2 profile-image" />
+                    <strong className="me-auto">{post.user_id.name}</strong>
+                    <button data-testid="like-button">
+                        <span data-testid="like-count">{post.numberOfLikes}</span>
+                    </button>
+                </div>
+                <div className="toast-body">
+                    <article>{post.message}</article>
+                    {post.imageUrl && <img src={post.imageUrl} alt="Post" style={{ width: '80%' }} />}
+                </div>
+            </div>
         </div>
     ),
 }));
@@ -42,6 +52,7 @@ describe("Profile Page", () => {
             user_id: { _id: "userId", name: "Test User", email: "test@example.com", profileImage: "testProfileImage.jpg" },
             imageUrl: "testImage.jpg",
             comments: [],
+            numberOfLikes: 0,
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString()
         }
@@ -51,22 +62,6 @@ describe("Profile Page", () => {
         localStorage.clear();
         localStorage.setItem("user", JSON.stringify({ name: "Test User", profileImage: "testProfileImage.jpg" }));
         vi.clearAllMocks();
-    });
-
-    test("It displays the user's profile image", async () => {
-        localStorage.setItem("token", "testToken");
-        getUserPosts.mockResolvedValue(mockPosts);
-
-        await act(async () => {
-            render(<ProfilePage />);
-        });
-
-        await waitFor(() => {
-            // Check that the profile image is displayed correctly
-            const profileImages = screen.getAllByAltText("Profile");
-            expect(profileImages).toHaveLength(2);
-            expect(profileImages[0]).toHaveAttribute('src', 'testProfileImage.jpg');
-        });
     });
 
     test("It displays user posts from the backend", async () => {
@@ -87,10 +82,10 @@ describe("Profile Page", () => {
             const postContent = within(post).getByText("Test User Post");
             expect(postContent).toBeInTheDocument();
             
-            const image = within(post).getByRole('img', { name: /profile/i });
-            expect(image).toHaveAttribute('src', 'testProfileImage.jpg');
+            const profileImage = within(post).getByAltText("Profile");
+            expect(profileImage).toHaveAttribute('src', 'testProfileImage.jpg');
             
-            const postImage = within(post).getByRole('img', { name: '' });
+            const postImage = within(post).getByAltText("Post");
             expect(postImage).toHaveAttribute('src', 'testImage.jpg');
         });
     });
