@@ -5,7 +5,7 @@ const { generateToken } = require("../lib/token");
 const getAllPosts = async (req, res) => {
   const posts = await Post.find()
   .populate("user_id", "name email profileImage")
-  .populate("comments.user_id", "name email")
+  .populate("comments.user_id", "name profileImage")
   .populate("likes", "name profileImage");
 
 
