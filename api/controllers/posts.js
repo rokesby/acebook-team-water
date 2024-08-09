@@ -1,4 +1,5 @@
 const Post = require("../models/post");
+const User = require("../models/user");
 const { generateToken } = require("../lib/token");
 
 const getAllPosts = async (req, res) => {
@@ -98,23 +99,32 @@ const likePost = async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    const likeIndex = postToLike.likes.indexOf(userId);
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const likeIndex = postToLike.likes.findIndex(like => like._id.toString() === userId);
     if (likeIndex > -1) {
       // user already liked the post so this is an unlike
       postToLike.likes.splice(likeIndex, 1);
     } else {
       // user has not liked the post so this is a like. it also stops duplicate likes from the same user
-      if (!postToLike.likes.includes(userId)) {
-        postToLike.likes.push(userId);
-      }
+      const likeData = {
+        _id: user._id,
+        name: user.name,
+        profileImage: user.profileImage
+      };
+      postToLike.likes.push(likeData);
     }
 
     await postToLike.save();
+    await postToLike.populate("likes", "name profileImage");
     res.status(200).json({ 
       message: "Post liked", 
       numberOfLikes: postToLike.likes.length, 
       likes: postToLike.likes,
-      isLikedByUser: postToLike.likes.includes(userId)
+      isLikedByUser: postToLike.likes.some(like => like._id.toString() === userId)
     });
   } catch (error) {
     console.log(error);
