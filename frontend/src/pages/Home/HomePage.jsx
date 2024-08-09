@@ -8,7 +8,7 @@ export const HomePage = () => {
       <GlobalNavBar></GlobalNavBar>
       <br></br>
       <div className="home">
-        <h1>Welcome to Acebook!</h1>
+        <h1>Welcome to Team Water Acebook!</h1>
         <br />
         <br />
         <br />
