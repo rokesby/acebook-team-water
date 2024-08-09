@@ -75,23 +75,23 @@ describe("Post Component Like Functionality", () => {
     });
 
     test("handles error when liking a post fails", async () => {
-        const consoleSpy = vi.spyOn(console, 'log');
+        const consoleSpy = vi.spyOn(console, 'error');
         likePost.mockRejectedValue(new Error("Failed to like post"));
-
+    
         await act(async () => {
             render(<Post post={mockPost} />);
         });
-
+    
         const likeButton = screen.getByTestId("like-button");
-
+    
         await act(async () => {
             fireEvent.click(likeButton);
         });
-
+    
         await waitFor(() => {
             expect(consoleSpy).toHaveBeenCalledWith(expect.any(Error));
         });
-
+    
         expect(screen.getByTestId("like-count")).toHaveTextContent("0");
     });
 
